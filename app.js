@@ -1,4 +1,5 @@
 //引入
+const querystring = require("querystring");
 const handlerBlogRouter = require("./src/router/blog");
 const handlerUserRouter = require("./src/router/user");
 
@@ -8,8 +9,9 @@ const serverHandle = (req,res) =>{
     //获取url
     const url = req.url;
     req.path = url.split("?")[0];
-    console.log('req.path: ', req.path);
-    console.log(req.method)
+   
+    //解析query
+    req.query = querystring.parse(url.split("?")[1]);
 
     //处理博客路由
     const blogData = handlerBlogRouter(req,res);
@@ -27,7 +29,7 @@ const serverHandle = (req,res) =>{
         res.end(
             JSON.stringify(loginData)
         )
-        return
+        return;
     }
 
     //处理未查找到路由
